@@ -21,30 +21,17 @@ void setup() {
 
 void loop () {
 
-//  Serial.println("Some looping");
-
   // light,fade_time,pulses,brightness
-  // 0,500,3,255-1,500,3,255
-
-  if (Serial.available()) {
-//    Serial.println("Serial available");
-  } else {
-//    Serial.println("Serial unavailable");
-  }
+  // 0,500,3,255-1,500,3,255-
+  // 0,500,1,255-1,500,1,255-2,500,1,255-
 
   delay (100);
 
-//  Serial.println("Delayed");
-
   if (Serial.available()) {
-
-//    Serial.println("Passed if");
 
     String inputString = readSerialString();
 
-//    Serial.println("Passed reading");
-
-//    Serial.println("Received serial command, containing: " + inputString);
+    Serial.println("Received serial command, containing: " + inputString);
 
     int commaIndex = inputString.indexOf(',');
     int secondCommaIndex = inputString.indexOf(',', commaIndex + 1);
@@ -57,7 +44,7 @@ void loop () {
 
     light = lightNum.toInt();
 
-//    Serial.println("Light number " + String(light));
+    Serial.println("Light number " + String(light));
 
     // Milliseconds per pulse
     String fadeLevel = inputString.substring(commaIndex + 1, secondCommaIndex);
@@ -66,33 +53,27 @@ void loop () {
 
     fade = fadeLevel.toInt();
 
-//    Serial.println("Fading for " + String(fade) + " milliseconds");
+    Serial.println("Fading for " + String(fade) + " milliseconds");
 
     // Number of pulses to perform
-    String pulseNum = inputString.substring(secondCommaIndex + 1); // To the end of the string
+    String pulseNum = inputString.substring(secondCommaIndex + 1);
 
     int num = 2;
 
     num = pulseNum.toInt();
 
-//    Serial.println(String(num) + " pulse(s)");
+    Serial.println(String(num) + " pulse(s)");
 
     // Brightness of light
-    String brightNum = inputString.substring(thirdCommaIndex + 1); // To the end of the string
+    String brightNum = inputString.substring(thirdCommaIndex + 1);
 
     int bright = 255;
 
     bright = brightNum.toInt();
 
-//    Serial.println("Brightness level " + String(bright));
-
     pulse(light, fade, num, bright);
 
-//    Serial.println("Pulsed");
-
   }
-
-//  Serial.println("Finished some stuff");
 
 }
 
@@ -135,16 +116,13 @@ String readSerialString () {
   String input;
   while (Serial.available()) {
     ch = Serial.read();
-    if ( ch == '-' || ch == '\n') {
-//      Serial.println("Breaking reading");
+    if ( ch == '-') {
       break;
     }
 
     input += ch;
 
-    while (! Serial.available()) {
-      delay (10);
-    }
+     delay (20);
 
   }
   return input;
